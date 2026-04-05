@@ -1,7 +1,5 @@
-import {createComparison, defaultRules} from "../lib/compare.js";
+import { createComparison, defaultRules } from "../lib/compare.js";
 
-// @todo: #4.3 — настроить компаратор
-const compare = createComparison(defaultRules);
 export function initFiltering(elements, indexes) {
     // @todo: #4.1 — заполнить выпадающие списки опциями
     Object.keys(indexes).forEach((elementName) => {
@@ -14,29 +12,27 @@ export function initFiltering(elements, indexes) {
             })
         );
     });
+
+    // @todo: #4.3 — настроить компаратор (перенесено внутрь функции)
+    const compare = createComparison(defaultRules);
+
     return (data, state, action) => {
         // @todo: #4.2 — обработать очистку поля
-         if (action && action.name === 'clear') {
-            // Находим родительский элемент кнопки
-            const button = action.element; // предполагаем, что элемент кнопки передан в action
-            const parent = button.parentElement;
-            
-            // Находим input рядом с кнопкой
-            const input = parent.querySelector('input, select');
-            if (input) {
-                // Сбрасываем значение поля ввода
-                input.value = '';
-                
-                // Получаем имя поля из data-field
-                const fieldName = button.dataset.field;
-                if (fieldName) {
-                    // Сбрасываем соответствующее поле в state
-                    state[fieldName] = '';
-                }
-            }
-            return data;
-        }
+        if (action && action.name === 'clear') {
+    const button = action; // action — это сам элемент кнопки
+    const parent = button.closest('[data-field]') || button.parentElement;
+    const input = parent?.querySelector('input, select');
+    
+    if (input) {
+        input.value = '';
+        const fieldName = button.dataset.field || input.name;
+        if (fieldName) state[fieldName] = '';
+    }
+    return data; // вернёт все данные после сброса
+}
+
         // @todo: #4.5 — отфильтровать данные используя компаратор
+        // Фильтруем данные, используя текущее состояние state
         return data.filter(row => compare(row, state));
     }
 }

@@ -21,6 +21,6 @@ export function initSearching(searchField) {
         }
         
         // Применяем компаратор для фильтрации данных
-        return data.filter(row => compare(row[searchField], state[searchField]));
+        return data.filter(row => compare(row, state));
     }
 }
