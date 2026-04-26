@@ -15,7 +15,7 @@ export function initFiltering(elements, indexes) {
         // @todo: #4.2 — обработать очистку поля
         if (action && action.name === 'clear') {
             const button = action;
-            const parent = button.closest('[data-field]') || button.parentElement;
+            const parent = button.parentElement;
             const input = parent?.querySelector('input, select');
     
             if (input) {
@@ -23,7 +23,7 @@ export function initFiltering(elements, indexes) {
                 const fieldName = button.dataset.field || input.name;
                 if (fieldName) state[fieldName] = '';
             }
-        return data;
+
         }
 
         // @todo: #4.5 — отфильтровать данные используя компаратор

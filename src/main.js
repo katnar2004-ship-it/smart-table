@@ -19,7 +19,7 @@ import {initSearching} from './components/searching.js';
 // @todo: подключение
 
 // Исходные данные используемые в render()
-const api = initData(sourceData);
+const api = initData();
 
 /**
  * Сбор и обработка полей из таблицы
@@ -97,4 +97,4 @@ async function init() {
     });
 }
 
-init().then(render)
+init().then(render);
